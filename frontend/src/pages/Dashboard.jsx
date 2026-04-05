@@ -236,8 +236,16 @@ export default function Dashboard() {
                 key={provider.id}
                 className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm"
               >
-                <div className="w-7 h-7 bg-gradient-to-br from-indigo-100 to-violet-100 rounded-lg flex items-center justify-center">
-                  <span className="text-indigo-700 font-bold text-xs">
+                <div className="w-7 h-7 bg-gradient-to-br from-indigo-100 to-violet-100 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
+                  {provider.logoUrl ? (
+                    <img
+                      src={provider.logoUrl}
+                      alt={provider.name}
+                      className="w-5 h-5 object-contain"
+                      onError={(e) => { e.currentTarget.style.display='none'; e.currentTarget.nextSibling.style.display='flex'; }}
+                    />
+                  ) : null}
+                  <span className="text-indigo-700 font-bold text-xs" style={{ display: provider.logoUrl ? 'none' : 'flex' }}>
                     {provider.name.charAt(0)}
                   </span>
                 </div>

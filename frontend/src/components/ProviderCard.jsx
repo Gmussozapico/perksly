@@ -22,10 +22,24 @@ export default function ProviderCard({ provider, isAdded, onToggle, loading }) {
           </div>
         )}
 
-        {/* Logo placeholder + name */}
+        {/* Logo + name */}
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-indigo-100 to-violet-100 rounded-xl flex items-center justify-center flex-shrink-0">
-            <span className="text-indigo-700 font-bold text-lg">
+          <div className="w-12 h-12 bg-gradient-to-br from-indigo-100 to-violet-100 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+            {provider.logoUrl ? (
+              <img
+                src={provider.logoUrl}
+                alt={provider.name}
+                className="w-9 h-9 object-contain"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.nextSibling.style.display = 'flex';
+                }}
+              />
+            ) : null}
+            <span
+              className="text-indigo-700 font-bold text-lg"
+              style={{ display: provider.logoUrl ? 'none' : 'flex' }}
+            >
               {provider.name.charAt(0)}
             </span>
           </div>
