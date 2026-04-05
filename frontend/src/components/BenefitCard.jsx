@@ -64,8 +64,16 @@ export default function BenefitCard({ benefit }) {
         {/* Provider info */}
         {benefit.provider && (
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-5 h-5 bg-gradient-to-br from-indigo-100 to-violet-100 rounded-md flex items-center justify-center">
-              <span className="text-indigo-700 font-bold text-xs">
+            <div className="w-5 h-5 bg-gradient-to-br from-indigo-100 to-violet-100 rounded-md flex items-center justify-center overflow-hidden">
+              {benefit.provider.logoUrl ? (
+                <img
+                  src={benefit.provider.logoUrl}
+                  alt={benefit.provider.name}
+                  className="w-4 h-4 object-contain"
+                  onError={(e) => { e.currentTarget.style.display='none'; e.currentTarget.nextSibling.style.display='flex'; }}
+                />
+              ) : null}
+              <span className="text-indigo-700 font-bold text-xs" style={{ display: benefit.provider.logoUrl ? 'none' : 'flex' }}>
                 {benefit.provider.name.charAt(0)}
               </span>
             </div>

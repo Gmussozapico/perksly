@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../context/AuthContext';
 import BenefitCard from '../components/BenefitCard';
-import { Search, Filter, Compass, X, Star } from 'lucide-react';
+import { Search, Filter, Compass, X, Star, List, LayoutGrid } from 'lucide-react';
 
 const BENEFIT_TYPES = [
   { value: '', label: 'Todos los tipos' },
@@ -24,6 +24,22 @@ const DAYS = [
 ];
 const TODAY = new Date().getDay();
 
+const CATEGORY_CONFIG = {
+  'Café':          { emoji: '☕', color: 'from-amber-400 to-orange-400' },
+  'Restaurante':   { emoji: '🍽️', color: 'from-red-400 to-rose-500' },
+  'Cine':          { emoji: '🎬', color: 'from-violet-500 to-purple-600' },
+  'Eventos':       { emoji: '🎭', color: 'from-pink-400 to-rose-500' },
+  'Moda':          { emoji: '👗', color: 'from-fuchsia-400 to-pink-500' },
+  'Deporte':       { emoji: '🏋️', color: 'from-green-400 to-emerald-500' },
+  'Viajes':        { emoji: '✈️', color: 'from-sky-400 to-blue-500' },
+  'Salud':         { emoji: '💊', color: 'from-teal-400 to-cyan-500' },
+  'Tecnología':    { emoji: '💻', color: 'from-slate-500 to-gray-600' },
+  'Streaming':     { emoji: '🎵', color: 'from-indigo-400 to-violet-500' },
+  'Supermercado':  { emoji: '🛒', color: 'from-lime-400 to-green-500' },
+  'Combustible':   { emoji: '⛽', color: 'from-orange-400 to-amber-500' },
+  'Seguros':       { emoji: '🛡️', color: 'from-blue-400 to-indigo-500' },
+};
+
 export default function MyBenefits() {
   const [benefits, setBenefits] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -34,6 +50,7 @@ export default function MyBenefits() {
   const [selectedDay, setSelectedDay] = useState(-1);
   const [categories, setCategories] = useState([]);
   const [hasProviders, setHasProviders] = useState(true);
+  const [viewMode, setViewMode] = useState('sections');
 
   const loadBenefits = useCallback(async () => {
     try {
@@ -122,11 +139,28 @@ export default function MyBenefits() {
         <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center">
           <Star className="w-5 h-5 text-white" />
         </div>
-        <div>
+        <div className="flex-1">
           <h1 className="text-2xl font-bold text-gray-900">Mis Beneficios</h1>
           <p className="text-sm text-gray-500">
             {benefits.length} beneficio{benefits.length !== 1 ? 's' : ''} disponibles
           </p>
+        </div>
+        {/* View mode toggle */}
+        <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
+          <button
+            onClick={() => setViewMode('sections')}
+            className={`p-1.5 rounded-md transition-colors ${viewMode === 'sections' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-400 hover:text-gray-600'}`}
+            title="Vista por secciones"
+          >
+            <LayoutGrid className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => setViewMode('list')}
+            className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-400 hover:text-gray-600'}`}
+            title="Vista en lista"
+          >
+            <List className="w-4 h-4" />
+          </button>
         </div>
       </div>
 
@@ -229,7 +263,7 @@ export default function MyBenefits() {
             </div>
           )}
 
-          {/* Benefits grid */}
+          {/* Benefits content */}
           {filtered.length === 0 ? (
             <div className="card p-10 text-center">
               <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-3">
@@ -246,7 +280,41 @@ export default function MyBenefits() {
                 Limpiar filtros
               </button>
             </div>
+          ) : viewMode === 'sections' ? (
+            /* ── Sections view ── */
+            <div className="space-y-8">
+              {Object.entries(
+                filtered.reduce((acc, b) => {
+                  if (!acc[b.category]) acc[b.category] = [];
+                  acc[b.category].push(b);
+                  return acc;
+                }, {})
+              )
+                .sort(([, a], [, b]) => b.length - a.length)
+                .map(([category, categoryBenefits]) => {
+                  const config = CATEGORY_CONFIG[category] || { emoji: '🎁', color: 'from-gray-400 to-gray-500' };
+                  return (
+                    <div key={category}>
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${config.color} flex items-center justify-center text-xl`}>
+                          {config.emoji}
+                        </div>
+                        <h2 className="text-lg font-bold text-gray-900">{category}</h2>
+                        <span className="text-xs bg-indigo-100 text-indigo-700 font-semibold px-2.5 py-1 rounded-full">
+                          {categoryBenefits.length}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {categoryBenefits.map((benefit) => (
+                          <BenefitCard key={benefit.id} benefit={benefit} />
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
           ) : (
+            /* ── List view ── */
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filtered.map((benefit) => (
                 <BenefitCard key={benefit.id} benefit={benefit} />
