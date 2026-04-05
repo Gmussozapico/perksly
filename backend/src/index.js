@@ -65,7 +65,7 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`BeneficiosHub API running on port ${PORT}`);
+  console.log(`Perksly API running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 

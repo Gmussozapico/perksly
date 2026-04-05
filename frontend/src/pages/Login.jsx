@@ -34,7 +34,7 @@ export default function Login() {
   };
 
   const fillDemo = () => {
-    setForm({ email: 'demo@beneficioshub.cl', password: 'demo1234' });
+    setForm({ email: 'demo@perksly.app', password: 'demo1234' });
     setError('');
   };
 
@@ -49,7 +49,7 @@ export default function Login() {
               <Sparkles className="w-6 h-6 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900">Bienvenido de vuelta</h1>
-            <p className="text-gray-500 mt-1">Ingresa a tu cuenta de BeneficiosHub</p>
+            <p className="text-gray-500 mt-1">Ingresa a tu cuenta de Perksly</p>
           </div>
 
           {/* Demo button */}
