@@ -140,7 +140,7 @@ UserProvider    — id, userId, providerId, addedAt  [unique: userId+providerId]
 
 ## Datos sembrados (seed.js)
 
-**5 categorías:** Banco 🏦, Telefonía 📱, Retail 🛍️, Seguros 🛡️, Entretenimiento 🎬
+**5 categorías de proveedor:** Banco 🏦, Telefonía 📱, Retail 🛍️, Seguros 🛡️, Entretenimiento 🎬
 
 **16 proveedores** con logos via Google Favicon API (`https://www.google.com/s2/favicons?domain=<dominio>&sz=128`):
 - Bancos: BCI, Santander, Banco de Chile, Itaú, Scotiabank, Banco Security, Banco Falabella, BancoEstado
@@ -148,10 +148,25 @@ UserProvider    — id, userId, providerId, addedAt  [unique: userId+providerId]
 - Retail: CMR Falabella, Ripley Card, La Polar Card
 - Seguros: MetLife
 
-**40 beneficios**, con `validDays` especiales:
-- BCI "2x1 Cinemark" → `[1,2,3,4]` (lunes a jueves)
-- CMR "15% dcto martes" → `[2]` (solo martes)
-- Resto → `[]` (todos los días)
+**~120 beneficios** en 13 categorías específicas:
+
+| Categoría | Emoji | Descripción |
+|---|---|---|
+| Café | ☕ | Cafeterías, desayuno, Starbucks, Juan Valdez, etc. |
+| Restaurante | 🍽️ | Almuerzo, cena, Rappi, Uber Eats, etc. |
+| Cine | 🎬 | Cinemark, Hoyts, Cinépolis |
+| Eventos | 🎭 | Teatro, conciertos, Ticketmaster, Puntoticket |
+| Moda | 👗 | Ropa, calzado, Falabella, Ripley, Zara, H&M, Adidas, Nike |
+| Deporte | 🏋️ | Gym Smartfit, SportLife, Marathon Sport |
+| Viajes | ✈️ | LATAM, Booking, Despegar, Uber, Roaming |
+| Salud | 💊 | Farmacias Cruz Verde/Ahumada/Salcobrand, ópticas, clínicas |
+| Tecnología | 💻 | Apple, Samsung, Sodimac, Linio, accesorios |
+| Streaming | 🎵 | Netflix, Spotify, Disney+, Apple TV+, Paramount+, Max |
+| Supermercado | 🛒 | Jumbo, Lider, Unimarc, Tottus |
+| Combustible | ⛽ | COPEC, puntos CMR |
+| Seguros | 🛡️ | Seguros de vida y viaje |
+
+`validDays` especiales: varios beneficios de martes, miércoles, jueves o fin de semana; resto `[]` (todos los días).
 
 **Usuario demo:** `demo@perksly.app` / `demo1234`
 
@@ -248,3 +263,4 @@ cd .. && ./start.sh
 | 2026-04-05 | Migración a PostgreSQL para Railway, despliegue inicial en `positive-upliftment` |
 | 2026-04-05 | Rename a **Perksly**, logos proveedores, favicon SVG, filtros por día de semana, recomendación diaria en Dashboard |
 | 2026-04-05 | Fix SPA 404: `serve -s`, logos → Google Favicon API |
+| 2026-04-05 | ~120 beneficios (era 40), 13 categorías específicas (Café, Cine, Moda, etc.), vista por secciones en MyBenefits |
